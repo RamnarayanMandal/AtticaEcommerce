@@ -16,7 +16,7 @@ app.use(express.json())
 
 app.use("/api/panshop/order", require("./src/routes/panShopRoutes"));
 
-  
+app.use("/api/panShopLogin" ,require("./src/routes/panShopOwnerRoutes"))  
 
 
 app.listen(port,()=>{
