@@ -129,4 +129,50 @@ const getPanShopOwnerById = asyncHandler(async (req, resp) => {
 });
 
 
-module.exports = { createPanShopOrder, getPanShopOrderById, updateEmail ,getPanShopOwnerById};
+const getAllOrderHistroyByShopOwnerId = asyncHandler(async (req, resp) => {
+    try {
+      const id =req.params.id 
+      const owner= await PanShopOwner.findById(id);
+      if(!owner){
+        resp.status(404).json({message: "User Doesn't Exist"})
+      }
+      const orders = await panShopOrder.aggregate([{
+        $match: {
+          panShopOwner_id:id// Corrected field name to panShopOwner_id
+        }
+      },
+      {
+        $unwind: "$products" // Deconstruct the products array
+      },
+      {
+        $project: {
+          _id: 1,
+          "products.productNames": 1, // Access nested field
+          "products.quantity": 1,
+          "products.price": 1,
+          totalPrice: 1,
+          superStockistEmail: 1,
+          stockistEmail: 1,
+          panShopOwner_id: 1, // Corrected field name to panShopOwner_id
+          panShopOwnerName: 1,
+          panShopOwneraddress: 1,
+          panShopOwnerstate: 1,
+          __v: 1
+        }
+      }
+    ])
+  
+      console.log(orders);
+  
+      // Send the orders back as a response
+      resp.status(200).json({ success: true, orders });
+    } catch (error) {
+      // Handle any errors
+      resp.status(500).json({ success: false, message: "PanShopOwner  Doesn't Exist" });
+    }
+  });
+  
+  
+
+
+module.exports = { createPanShopOrder, getPanShopOrderById, updateEmail ,getPanShopOwnerById ,getAllOrderHistroyByShopOwnerId};
