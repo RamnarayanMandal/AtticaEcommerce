@@ -57,7 +57,7 @@ const productSchema = new mongoose.Schema({
       type:String,
       default:'',
     }
-  });
+  },{timestamps:true});
   
   const panShopOrder = mongoose.model('panShopOrder', panShopOrderSchema);
   

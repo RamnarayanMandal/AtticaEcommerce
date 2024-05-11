@@ -39,7 +39,9 @@ const panShopSchema = new mongoose.Schema({
       data: Buffer,
       contentType: String
   }
-  });
+  },
+{timestamps : true}
+);
 // Create a model from the schema
 const PanShopOwner = mongoose.model('PanShopOwner', panShopSchema);
 

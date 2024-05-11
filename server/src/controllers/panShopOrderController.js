@@ -141,9 +141,7 @@ const getAllOrderHistroyByShopOwnerId = asyncHandler(async (req, resp) => {
           panShopOwner_id:id// Corrected field name to panShopOwner_id
         }
       },
-      {
-        $unwind: "$products" // Deconstruct the products array
-      },
+      
       {
         $project: {
           _id: 1,
@@ -157,6 +155,8 @@ const getAllOrderHistroyByShopOwnerId = asyncHandler(async (req, resp) => {
           panShopOwnerName: 1,
           panShopOwneraddress: 1,
           panShopOwnerstate: 1,
+          createdAt: 1,
+          updatedAt: 1,
           __v: 1
         }
       }
