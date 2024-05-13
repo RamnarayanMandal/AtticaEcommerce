@@ -16,16 +16,7 @@ const OpenCart = () => {
   const address = localStorage.getItem("address")
   const panShopOwner = localStorage.getItem("panShopOwner")
   const panShopOwnerState = localStorage.getItem("state")
-  // products,
-  // totalPrice : total_Price,
-  // superStockistEmail,
-  // stockistEmail,
-  // panShopOwner_id,
-  // panShopOwnerName,
-  // panShopOwnerstate,
-  // panShopOwneraddress
-
-
+  
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     const updatedCartItems = storedCartItems.map(item => ({
@@ -81,7 +72,7 @@ const OpenCart = () => {
   };
 
   const calculateTotalPrice = (items) => {
-    const total = items.reduce((acc, item) => acc + (item.quantity * item.price), 0);
+    const total = items.reduce((acc, item) => acc + (item.quantity * item.noofpieses * item.price), 0);
     setSubTotal(total);
   };
 
@@ -155,7 +146,7 @@ const OpenCart = () => {
                       <p className='m-5 text-white'>{item.quantity}</p>
                       <button className='btn-bg w-14 h-10 rounded-lg text-xl items-center ' onClick={handleIncrement(item.itemNo)}>+</button>
                     </div>
-                    <p className='text-right text-xl font-semibold'>Price : {item.price * item.quantity} </p>
+                    <p className='text-right text-xl font-semibold'>Price : {item.noofpieses * item.price * item.quantity} </p>
                     
                   </div>
                   

@@ -9,6 +9,8 @@ const DrawerCard = () => {
   const [cartItems, setCartItems] = useState([]);
   const [showMessage, setShowMessage] = useState(false);
 
+  console.log("cartItems" ,cartItems)
+
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     setCartItems(storedCartItems);
@@ -28,11 +30,11 @@ const DrawerCard = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex-col">
       <button onClick={toggleDrawer} className="btn-bg font-bold text-black px-4 py-2 rounded-lg w-full mb-5 transition duration-300 ease-in-out hover:bg-gray-700">
         Add to Cart
       </button>
-
+      <h1 className='pack-text' >1 Packet Contains 30 Pouches</h1>
       {/* Display message component */}
       {showMessage && (
         <Message message="Item added to cart" onClose={() => setShowMessage(false)} />

@@ -15,16 +15,16 @@ import product5 from "../../src/assets/product5.jpeg"
 import product6 from "../../src/assets/product6.jpeg"
 
 
-const Cards = ({ img, heading, price, itemNo, quantity, setCartItemCount }) => {
+const Cards = ({ img, heading, price, itemNo, quantity,noofpieses, setCartItemCount }) => {
     const [cartItems, setCartItems] = useState([]);
 
     const handleAddToCart = () => {
-        const cartItem = { img, heading, price, itemNo, quantity };
+        const cartItem = { img, heading, price, itemNo, quantity, noofpieses };
         const existingItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        
+    
         // Check if an item with the same itemNo already exists
         const itemExists = existingItems.some(item => item.itemNo === itemNo);
-        
+    
         if (!itemExists) {
             const updatedItems = [...existingItems, cartItem];
             localStorage.setItem('cartItems', JSON.stringify(updatedItems));
@@ -83,7 +83,7 @@ export default function Admin() {
                     <div className='flex float-right gap-2'>
                         <button>
                             <OpenCart show="!openDrawer" />
-                            {cartItemCount > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs absolute top-24 right-88">{cartItemCount}</span>}
+                            {cartItemCount > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs absolute top-6 right-88">{cartItemCount}</span>}
                         </button>
                         <div className=' flex items-center justify-center px-4 rounded-md'>
                             <button>  <OrderHistory /></button>
@@ -99,6 +99,7 @@ export default function Admin() {
                         price="5"
                         itemNo="1"
                         quantity=""
+                        noofpieses="30"
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
@@ -107,6 +108,7 @@ export default function Admin() {
                         price="5"
                         itemNo="2"
                          quantity=""
+                         noofpieses="30"
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
@@ -114,7 +116,8 @@ export default function Admin() {
                         heading="Attica Gold Pan Masala"
                         price="10"
                         itemNo="3"
-                         quantity=""
+                        quantity=""
+                        noofpieses="30"
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
@@ -123,22 +126,25 @@ export default function Admin() {
                         price="10"
                         itemNo="4"
                          quantity=""
+                         noofpieses="30"
                         setCartItemCount={setCartItemCount}
                     />
                      <Cards
                         img={product5}
                         heading="Attica Gold Pan Masala"
                         price="20"
-                        itemNo="3"
+                        itemNo="5"
                          quantity=""
+                         noofpieses="30"
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
                         img={product6}
                         heading="Attica Gold Pan Masala"
                         price="20"
-                        itemNo="4"
+                        itemNo="6"
                          quantity=""
+                         noofpieses="30"
                         setCartItemCount={setCartItemCount}
                     />
                 </section>

@@ -15,7 +15,7 @@ const createPanShopOrder = async (req, res) => {
 
   // Calculate total price for the products
   products.forEach(p => {
-    total_Price += Number(p.price) * Number(p.quantity); // Assuming Number is a function to parse strings to numbers
+    total_Price += Number(p.price) * Number(p.quantity) * 30; // Assuming Number is a function to parse strings to numbers
   });
 
   console.log(total_Price); // Log the total price
