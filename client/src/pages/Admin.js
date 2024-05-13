@@ -7,6 +7,13 @@ import { CardActionArea } from '@mui/material';
 import DrawerCard from '../components/DrawerCard';
 import OpenCart from '../components/OpenCart';
 import OrderHistory from "../components/OrderHistory";
+import product1 from "../../src/assets/product1.jpeg"
+import product2 from "../../src/assets/product2.jpeg"
+import product3 from "../../src/assets/product3.jpeg"
+import product4 from "../../src/assets/product4.jpeg"
+import product5 from "../../src/assets/product5.jpeg"
+import product6 from "../../src/assets/product6.jpeg"
+
 
 const Cards = ({ img, heading, price, itemNo, quantity, setCartItemCount }) => {
     const [cartItems, setCartItems] = useState([]);
@@ -70,53 +77,72 @@ export default function Admin() {
 
     return (
         <>
+         
             <div className=" mx-auto max-w-screen-xl home-bg py-10 flex flex-col md:p-10 ">
                 <section className='h-10 mb-4 '>
                     <div className='flex float-right gap-2'>
                         <button>
                             <OpenCart show="!openDrawer" />
-                            {cartItemCount > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs absolute top-7 right-85">{cartItemCount}</span>}
+                            {cartItemCount > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs absolute top-24 right-88">{cartItemCount}</span>}
                         </button>
                         <div className=' flex items-center justify-center px-4 rounded-md'>
                             <button>  <OrderHistory /></button>
                         </div>
                     </div>
                 </section>
+               
 
                 <section className=' grid lg:grid-cols-3 gap-4 md:grid-cols-2 grid-cols-1 '>
                     <Cards
-                        img="https://rajnigandha.com/dsg/product_image/1705481097-1.png"
-                        heading="Product 1"
-                        price="200"
+                        img={product1}
+                        heading="Attica Gold Pan Masala"
+                        price="5"
                         itemNo="1"
                         quantity=""
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
-                        img="https://rajnigandha.com/dsg/product_image/1702630157-1.png"
-                        heading="Product 2"
-                        price="200"
+                        img={product2}
+                        heading="Attica Gold Pan Masala"
+                        price="5"
                         itemNo="2"
                          quantity=""
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
-                        img="https://rajnigandha.com/dsg/product_image/1714362557-1.png"
-                        heading="Product 3"
-                        price="200"
+                        img={product3}
+                        heading="Attica Gold Pan Masala"
+                        price="10"
                         itemNo="3"
                          quantity=""
                         setCartItemCount={setCartItemCount}
                     />
                     <Cards
-                        img="https://rajnigandha.com/dsg/product_image/1686046440-1.png"
-                        heading="Product 4"
-                        price="200"
+                        img={product4}
+                        heading="Attica Gold Pan Masala"
+                        price="10"
+                        itemNo="4"
+                         quantity=""
+                        setCartItemCount={setCartItemCount}
+                    />
+                     <Cards
+                        img={product5}
+                        heading="Attica Gold Pan Masala"
+                        price="20"
+                        itemNo="3"
+                         quantity=""
+                        setCartItemCount={setCartItemCount}
+                    />
+                    <Cards
+                        img={product6}
+                        heading="Attica Gold Pan Masala"
+                        price="20"
                         itemNo="4"
                          quantity=""
                         setCartItemCount={setCartItemCount}
                     />
                 </section>
+              
               
             </div>
         </>

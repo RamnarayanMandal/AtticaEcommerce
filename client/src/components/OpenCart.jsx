@@ -4,6 +4,8 @@ import { IoCart } from 'react-icons/io5';
 import ClearCart from '../Utills/ClearCart';
 import axios from 'axios'; // Don't forget to import axios
 
+
+
 const OpenCart = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -116,7 +118,7 @@ const OpenCart = () => {
       <button onClick={toggleDrawer} className="btn-bg text-black px-4 py-2 rounded-lg w-full mb-20 transition duration-300 ease-in-out hover:bg-gray-700">
         <IoCart />
       </button>
-
+      
       {/* Drawer content */}
       <div className={`fixed inset-0 z-50 ${openDrawer ? 'visible' : 'invisible'}`} onClick={toggleDrawer}>
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" />

@@ -2,7 +2,7 @@
   text-align: center;
   margin: 0;
   padding: 0;
-  max-width: 80vw;
+  max-width: auto;
 }
 body{
   background-color: #010317;
@@ -17,3 +17,4 @@ body{
   font-weight: 400;
   font-style: normal;
 }
+
