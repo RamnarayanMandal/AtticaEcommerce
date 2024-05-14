@@ -13,6 +13,7 @@ import product3 from "../../src/assets/product3.jpeg"
 import product4 from "../../src/assets/product4.jpeg"
 import product5 from "../../src/assets/product5.jpeg"
 import product6 from "../../src/assets/product6.jpeg"
+import MonthlyIncom from '../components/MonthlyIncom';
 
 
 const Cards = ({ img, heading, price, itemNo, quantity,noofpieses, setCartItemCount }) => {
@@ -86,7 +87,10 @@ export default function Admin() {
                             {cartItemCount > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs absolute top-6 right-88">{cartItemCount}</span>}
                         </button>
                         <div className=' flex items-center justify-center px-4 rounded-md'>
-                            <button>  <OrderHistory /></button>
+                            <button> <MonthlyIncom/> </button>
+                        </div>
+                        <div className=' flex items-center justify-center px-4 rounded-md'>
+                            <button>  <OrderHistory/></button>
                         </div>
                     </div>
                 </section>

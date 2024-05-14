@@ -9,8 +9,7 @@ const DrawerCard = () => {
   const [cartItems, setCartItems] = useState([]);
   const [showMessage, setShowMessage] = useState(false);
 
-  console.log("cartItems" ,cartItems)
-
+ 
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     setCartItems(storedCartItems);

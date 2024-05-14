@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { SlArrowLeft } from 'react-icons/sl';
 import { IoCart } from 'react-icons/io5';
 import ClearCart from '../Utills/ClearCart';
-import axios from 'axios'; // Don't forget to import axios
-
-
+import axios from 'axios';
 
 const OpenCart = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [cartMessage, setCartMessage] = useState('');
-
+ 
   const pashShopOwnerId = localStorage.getItem("id")
   const address = localStorage.getItem("address")
   const panShopOwner = localStorage.getItem("panShopOwner")
@@ -26,7 +24,6 @@ const OpenCart = () => {
     }));
 
     setCartItems(updatedCartItems);
-    // Calculate initial total price
     calculateTotalPrice(updatedCartItems);
   }, []);
 
@@ -42,11 +39,8 @@ const OpenCart = () => {
       return item;
     });
     setCartItems(updatedCartItems);
-    // Update local storage
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-    // Recalculate total price
     calculateTotalPrice(updatedCartItems);
-    // Clear cart message after 3 seconds
     setTimeout(() => {
       setCartMessage('');
     }, 3000);
@@ -60,12 +54,10 @@ const OpenCart = () => {
       return item;
     });
     setCartItems(updatedCartItems);
-    // Update local storage
+   
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-    // Recalculate total price
     calculateTotalPrice(updatedCartItems);
     setCartMessage('Product removed from the cart');
-    // Clear cart message after 3 seconds
     setTimeout(() => {
       setCartMessage('');
     }, 3000);
@@ -92,17 +84,14 @@ const OpenCart = () => {
   
     try {
       await axios.post("http://localhost:5000/api/panshop/order", postData);
-      // Clear cart after successful order
       setCartItems([]);
-      localStorage.removeItem('cartItems');
+           localStorage.removeItem('cartItems');
       setCartMessage('Order placed successfully!');
     } catch (error) {
       console.error('Error placing order:', error);
       setCartMessage('Failed to place order. Please try again.');
     }
   };
-  
-
 
   return (
     <div className="flex">
@@ -110,13 +99,11 @@ const OpenCart = () => {
         <IoCart />
       </button>
       
-      {/* Drawer content */}
       <div className={`fixed inset-0 z-50 ${openDrawer ? 'visible' : 'invisible'}`} onClick={toggleDrawer}>
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" />
       </div>
       <div className={`fixed right-0 top-0 h-full w-2/5 bg-gray-900 z-50 transform transition-transform ease-in-out duration-300 ${openDrawer ? 'translate-x-0' : 'translate-x-full'}`}>
-        {/* Drawer header */}
-        <div className="items-center px-10 py-8">
+        <div className="items-center px-10 py-8" style={{ overflowY: 'hidden' }}>
           <div className='flex text-2xl font-bold text-center gap-2 justify-between bg- items-center text-white'>
             <div className='flex items-center'>
               <SlArrowLeft onClick={toggleDrawer} className='mt-1' />
@@ -127,8 +114,8 @@ const OpenCart = () => {
             </div>
           </div>
           <hr className='border-t border-gray-300 my-8 w-full ' />
-          {/* Cart items */}
-          <div className="px-20 py-4 items-center justify-center content-center">
+          
+          <div className="px-20 py-4 items-center justify-center content-center" style={{ maxHeight: '60vh', overflowY: 'scroll', scrollbarWidth: 'none' }}>
             <div className="cart-items-container">
               {cartItems.map((item, index) => (
                 <div key={index} className='flex items-center gap-20 py-10'>
@@ -156,8 +143,8 @@ const OpenCart = () => {
              
             </div>
           </div>
-          {/* Total Price */}
-          <div className='sticky bottom-10   w-auto flex items-center justify-between btn-bg py-4 px-2 rounded-xl '>
+          
+          <div className='sticky   w-auto flex items-center justify-between btn-bg py-4 px-2 rounded-xl '>
             <p className='text-2xl font-bold text'>{cartMessage ? cartMessage : `Total Price: ${subTotal}`}</p>
             <button onClick={handleSubmit} className='bg-blue-900 text-white font-bold py-2 px-4 rounded-xl relative'>Place Order</button>
           </div>
