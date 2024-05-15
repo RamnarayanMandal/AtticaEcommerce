@@ -56,7 +56,28 @@ const productSchema = new mongoose.Schema({
     panShopOwneraddress:{
       type:String,
       default:'',
-    }
+    },
+    status: {
+      type: String,
+      enum: ["pending", "confirmed", "delivered"],
+      default: "pending"
+  },
+
+  otp: {
+      type: Number,
+      default: '',
+
+  },
+  assignTo: {
+      type: String,
+      default: '',
+
+  },
+  deliveryTime: {
+      type: String,
+      default: ""
+
+  },
   },{timestamps:true});
   
   const panShopOrder = mongoose.model('panShopOrder', panShopOrderSchema);

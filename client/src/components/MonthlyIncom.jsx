@@ -8,15 +8,15 @@ const MonthlyIncom = () => {
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
   const panshopOwner_id = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const response = await axios.get(`http://localhost:5000/api/panShopLogin/orderHistroy/${panshopOwner_id}`);
         setHistoryData(response.data.orders);
-        console.log(response.data) // Ensure historyData is an array
+        console.log("MonthlyIncome", response.data); // Ensure historyData is an array
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -24,10 +24,8 @@ const MonthlyIncom = () => {
       }
     };
 
-    if (selectedMonth) {
-      fetchData();
-    }
-  }, [panshopOwner_id, selectedMonth]);
+    fetchData();
+  }, [panshopOwner_id]);
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
@@ -36,6 +34,19 @@ const MonthlyIncom = () => {
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
   };
+
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
+  const filteredHistoryData = selectedMonth && selectedYear
+    ? historyData.filter((order) => {
+        const orderDate = new Date(order.createdAt);
+        const orderMonth = String(orderDate.getMonth() + 1).padStart(2, '0');
+        const orderYear = orderDate.getFullYear();
+        return orderMonth === selectedMonth && String(orderYear) === selectedYear;
+      })
+    : [];
 
   return (
     <div className="flex">
@@ -50,34 +61,42 @@ const MonthlyIncom = () => {
 
       {/* Order History Drawer */}
       <div className={`fixed right-0 top-0 h-full md:w-2/3 lg:w-1/3 bg-gray-900 z-50 transform transition-transform ease-in-out duration-300 ${openDrawer ? 'translate-x-0' : 'translate-x-full'}`} style={{ height: '100vh', overflowY: 'auto', scrollbarWidth: 'none', '-ms-overflow-style': 'none' }}>
-        <div className="flex justify-between items-center px-10 py-8 border-b border-gray-300 bg-blue-900 text-white">
+        <div className="flex justify-between items-center px-10 py-8 border-b border-gray-300 bg-gray-900 text-white">
           <div className='flex text-2xl font-bold text-center gap-2'>
             <SlArrowLeft onClick={toggleDrawer} className='mt-1' />
             <h1>Monthly Order</h1>
           </div>
-          <select className="bg-gray-900 text-white px-4 py-2 rounded" value={selectedMonth} onChange={handleMonthChange}>
-            <option value="">Select Month</option>
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-          </select>
+          <div className="flex gap-2">
+            <select className="bg-gray-900 text-white px-4 py-2 rounded" value={selectedMonth} onChange={handleMonthChange}>
+              <option value="">Select Month</option>
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <select className="bg-gray-900 text-white px-4 py-2 rounded" value={selectedYear} onChange={handleYearChange}>
+              <option value="">Select Year</option>
+              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
         </div>
         <div className='p-8'>
           {loading ? (
             <p>Loading...</p>
           ) : (
             <div className='grid grid-cols-1 gap-6'>
-              {historyData.length > 0 ? (
-                historyData.map((order, index) => (
+              {filteredHistoryData.length > 0 ? (
+                filteredHistoryData.map((order, index) => (
                   <div key={index} className="btn-bg shadow-lg rounded-lg overflow-hidden">
                     <div className="border-gray-300 pt-4">
                       <h2 className="font-bold mb-1 text-xl">Products Details</h2>
@@ -101,7 +120,7 @@ const MonthlyIncom = () => {
                   </div>
                 ))
               ) : (
-                <p>No order history available for the selected month.</p>
+                <p className='text-white'>No order history available for the selected month.</p>
               )}
             </div>
           )}

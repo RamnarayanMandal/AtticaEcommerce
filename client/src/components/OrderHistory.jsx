@@ -14,7 +14,7 @@ const OrderHistory = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/panShopLogin/orderHistroy/${panshopOwner_id}`);
         setHistoryData(response.data.orders);
-        console.log(response.data) // Ensure historyData is an array
+       // console.log(response.data) // Ensure historyData is an array
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -42,7 +42,7 @@ const OrderHistory = () => {
 
       {/* Order History Drawer */}
       <div className={`fixed right-0 top-0 h-full  md:w-2/3 lg:w-1/3  bg-gray-900 z-50 transform transition-transform ease-in-out duration-300 ${openDrawer ? 'translate-x-0' : 'translate-x-full'}`} style={{ height: '100vh', overflowY: 'auto', scrollbarWidth: 'none', '-ms-overflow-style': 'none' }}>
-        <div className="flex justify-between items-center px-10 py-8 border-b border-gray-300 bg-blue-900 text-white">
+        <div className="flex justify-between items-center px-10 py-8 border-b border-gray-300 bg-gray-900 text-white">
           <div className='flex text-2xl font-bold text-center gap-2'>
             <SlArrowLeft onClick={toggleDrawer} className='mt-1' />
             <h1>Order History</h1>

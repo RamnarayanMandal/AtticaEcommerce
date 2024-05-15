@@ -9,41 +9,35 @@ const panShopOrder = require('../model/panShopOrderModel');
 const PanShopOwner=require("../model/panShopOwnerModel")
 
 const createPanShopOrder = async (req, res) => {
-    const { products, totalPrice, superStockistEmail, stockistEmail,  panShopOwner_id,panShopOwnerName,panShopOwnerstate ,panShopOwneraddress } = req.body;
-    
-    let total_Price = 0; // Initialize total_Price as 0
+  const { products, superStockistEmail, stockistEmail, panShopOwner_id,panShopOwnerName, panShopOwnerstate, panShopOwneraddress, status ,deliveryTime,assignTo,otp} = req.body;
 
-  // Calculate total price for the products
-  products.forEach(p => {
-    total_Price += Number(p.price) * Number(p.quantity) * 30; // Assuming Number is a function to parse strings to numbers
-  });
+  if (!products || !Array.isArray(products) || products.length === 0) {
+    return res.status(400).json({ error: "Products array is required and cannot be empty" });
+  }
 
-  console.log(total_Price); // Log the total price
-    
+  const totalPrice = products.reduce((acc, product) => acc + product.quantity * product.price, 0);
 
-    if (!products || !products.length ) {
-        return res.status(400).json({ error: "All fields are mandatory" });
-    }
+  try {
+    const order = await panShopOrder.create({
+      products,
+      totalPrice,
+      superStockistEmail,
+      stockistEmail,
+      panShopOwner_id,
+      panShopOwnerName, // Assuming this is static for now
+      panShopOwnerstate,
+      panShopOwneraddress,
+      status,
+      deliveryTime,
+      assignTo,
+      otp
+    });
 
- 
-
-    try {
-        const order = await panShopOrder.create({
-            products,
-            totalPrice : total_Price,
-            superStockistEmail,
-            stockistEmail,
-            panShopOwner_id,
-            panShopOwnerName,
-            panShopOwnerstate,
-            panShopOwneraddress
-        });
-
-        res.status(201).json(order); // Return the created order
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to create pan shop order" });
-    }
+    res.status(201).json(order); // Return the created order
+  } catch (error) {
+    console.error("Error creating pan shop order:", error);
+    res.status(500).json({ error: "Failed to create pan shop order" });
+  }
 };
 
 const getPanShopOrderById = async (req, res) => {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SlArrowLeft } from 'react-icons/sl';
-import ClearCart from '../Utills/ClearCart';
+// import { SlArrowLeft } from 'react-icons/sl';
+// import ClearCart from '../Utills/ClearCart';
 import Message from './Message'; // Import the Message component
 
-const DrawerCard = () => {
+const Test = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedOption, setSelectedOption] = useState({});
   const [cartItems, setCartItems] = useState([]);
@@ -33,15 +33,15 @@ const DrawerCard = () => {
       <button onClick={toggleDrawer} className="btn-bg font-bold text-black px-4 py-2 rounded-lg w-full mb-5 transition duration-300 ease-in-out hover:bg-gray-700">
         Add to Cart
       </button>
-      <h1 className='pack-text text-white' >1 Packet Contains 30 Pouches</h1>
+      {/* <h1 className='pack-text' >1 Packet Contains 30 Pouches</h1> */}
       {/* Display message component */}
-      {showMessage && (
+      {/* {showMessage && (
         <Message message="Item added to cart" onClose={() => setShowMessage(false)} />
-      )}
+      )} */}
 
       {/* Rest of your code */}
     </div>
   );
 };
 
-export default DrawerCard;
+export default Test;
