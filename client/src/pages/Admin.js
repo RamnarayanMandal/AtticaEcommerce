@@ -18,11 +18,11 @@ import product6 from "../../src/assets/product6.jpeg"//20rs
 import MonthlyIncom from '../components/MonthlyIncom';
 import Test from "../components/Test"
 
-const Cards = ({ img, heading, price, itemNo, quantity, noofpieses,msg, setCartItemCount }) => {
+const Cards = ({ img, heading, price, itemNo, quantity, noofpieses,msg,  description,setCartItemCount }) => {
     const [cartItems, setCartItems] = useState([]);
 
     const handleAddToCart = () => {
-        const cartItem = { img, heading, price, itemNo,msg, quantity, noofpieses };
+        const cartItem = { img, heading, price, itemNo,msg, quantity, noofpieses , description};
         const existingItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
         // Check if an item with the same itemNo already exists
@@ -104,6 +104,7 @@ export default function Admin() {
                 <Cards
                         img={product1}
                         heading="Attica Gold "
+                        description ="1 Pack"
                         price="150"
                         itemNo="1"
                         quantity=""
@@ -115,6 +116,7 @@ export default function Admin() {
 <Cards
                         img={product2}
                         heading="Attica Gold "
+                        description ="1 Pack"
                         price="150"
                         itemNo="2"
                         quantity=""
@@ -126,6 +128,7 @@ export default function Admin() {
 <Cards
                         img={product1}
                         heading="Attica Gold "
+                        description ="1 HDPE"
                         price="9150"
                         itemNo="3"
                         quantity=""
@@ -137,6 +140,7 @@ export default function Admin() {
                     <Cards
                         img={product2}
                         heading="Attica Gold"
+                        description ="1 HDPE"
                         price="9150"
                         itemNo="4"
                         quantity=""
@@ -148,6 +152,7 @@ export default function Admin() {
           <Cards
                         img={product1}
                         heading="Attica Gold "
+                        description ="1 Jute Bag"
                         price="36600"
                         itemNo="5"
                         quantity=""
@@ -158,6 +163,7 @@ export default function Admin() {
            <Cards
                         img={product2}
                         heading="Attica Gold "
+                        description ="1 Jute Bag"
                         price="36600"
                         itemNo="6"
                         quantity=""
@@ -200,6 +206,7 @@ export default function Admin() {
                     <Cards
                         img={product3}
                         heading="Attica Gold "
+                        description ="1 Pack"
                         price="220"
                         itemNo="7"
                         quantity=""
@@ -210,6 +217,7 @@ export default function Admin() {
                      <Cards
                         img={product4}
                         heading="Attica Gold "
+                        description ="1 Pack"
                         price="220"
                         itemNo="8"
                         quantity=""
@@ -221,6 +229,7 @@ export default function Admin() {
 <Cards
                         img={product3}
                         heading="Attica Gold "
+                        description ="1 Small HDPE"
                         price="13420"
                         itemNo="9"
                         quantity=""
@@ -231,6 +240,7 @@ export default function Admin() {
                     <Cards
                         img={product4}
                         heading="Attica Gold "
+                        description ="1 Small HDPE"
                         price="13420"
                         itemNo="10"
                         quantity=""
@@ -241,6 +251,7 @@ export default function Admin() {
                      <Cards
                         img={product3}
                         heading="Attica Gold "
+                        description ="1 Jute Bag"
                         price="53680"
                         itemNo="11"
                         quantity=""
@@ -251,6 +262,7 @@ export default function Admin() {
                     <Cards
                         img={product4}
                         heading="Attica Gold "
+                        description ="1 Jute Bag"
                         price="53680"
                         itemNo="12"
                         quantity=""
@@ -287,6 +299,7 @@ export default function Admin() {
 <Cards
                         img={product5}
                         heading="Attica Gold "
+                        description ="1 Mono cartoon"
                         price="200"
                         itemNo="13"
                         quantity="10"
@@ -308,6 +321,7 @@ export default function Admin() {
                     <Cards
                         img={product5}
                         heading="Attica Gold "
+                        description ="1 Mono Cartoon"
                         price="2200"
                         itemNo="15"
                         quantity=""
@@ -318,6 +332,7 @@ export default function Admin() {
                     <Cards
                         img={product6}
                         heading="Attica Gold "
+                        description ="1 Mono Cartoon"
                         price="2200"
                         itemNo="16"
                         quantity=""
@@ -328,6 +343,7 @@ export default function Admin() {
                      <Cards
                         img={product5}
                         heading="Attica Gold "
+                        description ="1 Small HDPE"
                         price="20"
                         itemNo="17"
                         quantity=""
@@ -338,6 +354,7 @@ export default function Admin() {
                      <Cards
                         img={product6}
                         heading="Attica Gold "
+                        description ="1 Small HDPE"
                         price="20"
                         itemNo="18"
                         quantity=""
@@ -348,6 +365,7 @@ export default function Admin() {
                      <Cards
                         img={product5}
                         heading="Attica Gold "
+                        description ="1 CB"
                         price="20"
                         itemNo="19"
                         quantity=""
@@ -358,6 +376,7 @@ export default function Admin() {
                      <Cards
                         img={product6}
                         heading="Attica Gold "
+                        description ="1 CB"
                         price="20"
                         itemNo="20"
                         quantity=""
@@ -368,6 +387,7 @@ export default function Admin() {
                      <Cards
                         img={product5}
                         heading="Attica Gold "
+                        description ="1 Jute Bag"
                         price="20"
                         itemNo="21"
                         quantity=""
@@ -378,6 +398,7 @@ export default function Admin() {
                      <Cards
                         img={product6}
                         heading="Attica Gold "
+                        description ="1 Jute Bag"
                         price="20"
                         itemNo="22"
                         quantity=""

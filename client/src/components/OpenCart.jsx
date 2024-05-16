@@ -5,7 +5,7 @@ import ClearCart from '../Utills/ClearCart';
 import axios from 'axios';
 import { FaRupeeSign } from "react-icons/fa";
 import { TfiAlert } from "react-icons/tfi";
-
+import { RxCross2 } from "react-icons/rx";
 
 const OpenCart = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -65,30 +65,40 @@ const OpenCart = () => {
     }, 3000);
   };
 
+  const handleRemoveItem = itemNo => () => {
+    const updatedCartItems = cartItems.filter(item => item.itemNo !== itemNo);
+    setCartItems(updatedCartItems);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    calculateTotalPrice(updatedCartItems);
+    setCartMessage('Product removed from the cart');
+    setTimeout(() => {
+      setCartMessage('');
+    }, 3000);
+  };
+
   const calculateTotalPrice = items => {
     const total = items.reduce((acc, item) => acc + item.quantity * item.noofpieses * item.price, 0);
     setSubTotal(total);
   };
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const orderNumber = Math.floor(1000 + Math.random() * 9000); // Generate a 4-digit random number
-    console.log("orderNumbr  ",orderNumber)
+    console.log("orderNumbr  ", orderNumber)
     const postData = {
-      products: cartItems.map(({ heading, quantity, price }) => ({
-        productNames: heading,
+      products: cartItems.map(({ heading, quantity, price, description }) => ({
+        productNames: heading + "( " +  description +" )",
         quantity,
         price,
-     
       })),
-      otp : orderNumber,
+      otp: orderNumber,
       panShopOwnerName: panShopOwner,
       panShopOwneraddress: address,
       panShopOwner_id: pashShopOwnerId,
       panShopOwnerstate: panShopOwnerState,
       orderNumber // Include the random number in the order data
     };
-  
+
     try {
       await axios.post("http://localhost:5000/api/panshop/order", postData);
       setCartItems([]);
@@ -112,17 +122,17 @@ const OpenCart = () => {
       <div className={`fixed right-0 top-0 h-full md:w-2/3 lg:w-1/3 bg-gray-900 z-50 transform transition-transform ease-in-out duration-300 ${openDrawer ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="items-center px-10 py-8" style={{ overflowY: 'hidden' }}>
           <div className="flex text-2xl font-bold text-center gap-2 justify-between bg-items-center text-white">
-          <div>
-  <div className="flex items-center">
-    <SlArrowLeft onClick={toggleDrawer} className="mt-1" />
-    <h1>Shopping Cart</h1>
-  </div>
-  <div>
-    <p className='text-sm text-[#c8a357] text-left font-semibold flex items-start mt-5'>
-      <TfiAlert className='mr-2 text-xl' /> Your cart is waiting for you! Please complete your order.
-    </p>
-  </div>
-</div>
+            <div>
+              <div className="flex items-center">
+                <SlArrowLeft onClick={toggleDrawer} className="mt-1" />
+                <h1>Shopping Cart</h1>
+              </div>
+              <div>
+                <p className='text-sm text-[#c8a357] text-left font-semibold flex items-start mt-5'>
+                  <TfiAlert className='mr-2 text-xl' /> Your cart is waiting for you! Please complete your order.
+                </p>
+              </div>
+            </div>
 
             <div>
               <ClearCart />
@@ -137,24 +147,29 @@ const OpenCart = () => {
                   <img className="w-60 h-60" src={item.img} alt="Product Image" />
                   <div className="flex flex-col gap-2 text-white">
                     <div className="flex items-center gap-2">
-                      <h1 className=" text-left text-lg font-semibold">{item.heading}</h1>
+                      <h1 className="text-left text-lg font-semibold">{item.heading}</h1>
                       <span className="text-xl font-semibold">:</span>
                       <h1 className="text-xl font-semibold">{item.price}</h1>
                     </div>
                     <div className="flex items-center gap-4 text-2xl text-black">
                       <button className="btn-bg w-12 h-10 rounded-lg" onClick={handleDecrement(item.itemNo)}>-</button>
-                      <p className=" text-leftm-5 text-white">{item.quantity}</p>
+                      <p className="text-left m-5 text-white">{item.quantity}</p>
                       <button className="btn-bg w-12 h-10 rounded-lg text-xl" onClick={handleIncrement(item.itemNo)}>+</button>
                     </div>
                     <div className="text-left text-lg font-semibold flex items-center">
-                      Price : <FaRupeeSign className='text-sm'/> {item.noofpieses * item.price * item.quantity}
+                      Price : <FaRupeeSign className='text-sm' /> {item.noofpieses * item.price * item.quantity}
                     </div>
                   </div>
+                 <div className='pb-52 '>
+                 <button onClick={handleRemoveItem(item.itemNo)} className="bg-red-500 text-2xl  rounded-lg text-black">
+                   <RxCross2 className='w-12 h-10 '/>
+                  </button>
+
+                 </div>
                 </div>
               ))}
             </div>
           </div>
-         
 
           <div className="sticky bottom-0 w-full flex items-center justify-between btn-bg py-4 px-2 rounded-xl">
             <p className="text-base font-bold">{cartMessage ? cartMessage : `Total Price: ${subTotal}`}</p>
