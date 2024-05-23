@@ -77,14 +77,14 @@ const OpenCart = () => {
   };
 
   const calculateTotalPrice = items => {
-    const total = items.reduce((acc, item) => acc + item.quantity * item.noofpieses * item.price, 0);
+    const total = items.reduce((acc, item) => acc + item.quantity  * item.price, 0);
     setSubTotal(total);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const orderNumber = Math.floor(1000 + Math.random() * 9000); // Generate a 4-digit random number
-    console.log("orderNumbr  ", orderNumber)
+  
     const postData = {
       products: cartItems.map(({ heading, quantity, price, description }) => ({
         productNames: heading + "( " +  description +" )",
@@ -98,17 +98,24 @@ const OpenCart = () => {
       panShopOwnerstate: panShopOwnerState,
       orderNumber // Include the random number in the order data
     };
-
+  
     try {
       await axios.post("http://localhost:5000/api/panshop/order", postData);
       setCartItems([]);
       localStorage.removeItem('cartItems');
       setCartMessage(`Order placed successfully! Your order number is ${orderNumber}.`);
+  
+      // Display order number for 60 seconds
+      setTimeout(() => {
+        setCartMessage(`Total Price: ${subTotal}`);
+      }, 30000); // 60 seconds
+  
     } catch (error) {
       console.error('Error placing order:', error);
       setCartMessage('Failed to place order. Please try again.');
     }
   };
+  
 
   return (
     <div className="flex">
@@ -157,7 +164,7 @@ const OpenCart = () => {
                       <button className="btn-bg w-12 h-10 rounded-lg text-xl" onClick={handleIncrement(item.itemNo)}>+</button>
                     </div>
                     <div className="text-left text-lg font-semibold flex items-center">
-                      Price : <FaRupeeSign className='text-sm' /> {item.noofpieses * item.price * item.quantity}
+                      Price : <FaRupeeSign className='text-sm' /> { item.price * item.quantity}
                     </div>
                   </div>
                  <div className='pb-52 '>
