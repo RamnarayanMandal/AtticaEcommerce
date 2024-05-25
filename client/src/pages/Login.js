@@ -12,11 +12,15 @@ const Login = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/panShopLogin/${panshopOwner_id}`);
         setLoginData(response.data);
-        console.log(response.data) 
+        console.log(response.data);
+
+        const addressParts = response.data.owner.address.split(',');
+        const state = addressParts[addressParts.length - 2].trim(); // Extract the second last part which is the state
+
         localStorage.setItem("id", response.data.owner._id);
         localStorage.setItem("panShopOwner", response.data.owner.panShopOwner);
         localStorage.setItem("address", response.data.owner.address);
-        localStorage.setItem("state", response.data.owner.state);
+        localStorage.setItem("state", state);
         
         navigate("/admin");
 
@@ -26,10 +30,8 @@ const Login = () => {
     };
 
     fetchData();
-  }, [panshopOwner_id]);
+  }, [panshopOwner_id, navigate]);
 
-  // Redirect if loginData is not null
-  
   return (
     <>
       {loginData ? (
