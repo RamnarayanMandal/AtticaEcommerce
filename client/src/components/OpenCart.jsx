@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from 'react';
 import { SlArrowLeft } from 'react-icons/sl';
 import { IoCart } from 'react-icons/io5';
@@ -5,13 +8,15 @@ import ClearCart from '../Utills/ClearCart';
 import axios from 'axios';
 import { FaRupeeSign } from "react-icons/fa";
 import { TfiAlert } from "react-icons/tfi";
-import { RxCross2 } from "react-icons/rx";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { LuIndianRupee } from "react-icons/lu";
 
 const OpenCart = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [cartMessage, setCartMessage] = useState('');
+  const [deleteLabel, setDeleteLabel] = useState('');
 
   const pashShopOwnerId = localStorage.getItem("id");
   const address = localStorage.getItem("address");
@@ -71,23 +76,25 @@ const OpenCart = () => {
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
     calculateTotalPrice(updatedCartItems);
     setCartMessage('Product removed from the cart');
+    setDeleteLabel('Delete item');
     setTimeout(() => {
       setCartMessage('');
+      setDeleteLabel('');
     }, 3000);
   };
 
   const calculateTotalPrice = items => {
-    const total = items.reduce((acc, item) => acc + item.quantity  * item.price, 0);
+    const total = items.reduce((acc, item) => acc + item.quantity * item.price, 0);
     setSubTotal(total);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const orderNumber = Math.floor(1000 + Math.random() * 9000); // Generate a 4-digit random number
-  
+
     const postData = {
       products: cartItems.map(({ heading, quantity, price, description }) => ({
-        productNames: heading + "( " +  description +" )",
+        productNames: heading + "( " + description + " )",
         quantity,
         price,
       })),
@@ -98,24 +105,23 @@ const OpenCart = () => {
       panShopOwnerstate: panShopOwnerState,
       orderNumber // Include the random number in the order data
     };
-  
+
     try {
       await axios.post("http://localhost:5000/api/panshop/order", postData);
       setCartItems([]);
       localStorage.removeItem('cartItems');
       setCartMessage(`Order placed successfully! Your order number is ${orderNumber}.`);
-  
+
       // Display order number for 60 seconds
       setTimeout(() => {
         setCartMessage(`Total Price: ${subTotal}`);
       }, 30000); // 60 seconds
-  
+
     } catch (error) {
       console.error('Error placing order:', error);
       setCartMessage('Failed to place order. Please try again.');
     }
   };
-  
 
   return (
     <div className="flex">
@@ -150,13 +156,21 @@ const OpenCart = () => {
           <div className="px-6 py-4 items-center justify-center content-center" style={{ maxHeight: '60vh', overflowY: 'scroll', scrollbarWidth: 'none' }}>
             <div className="cart-items-container">
               {cartItems.map((item, index) => (
-                <div key={index} className="flex flex-col sm:flex-row items-center gap-4 py-6">
+                <div key={index} className="relative flex flex-col sm:flex-row items-center gap-4 py-6">
+                  <button onClick={handleRemoveItem(item.itemNo)} className="absolute top-0 right-0 bg-red-500 text-xl rounded-lg text-black m-2">
+                    <RiDeleteBinLine className='lg:w-12 lg:h-10 w-8 h-8' />
+                  </button>
+                  {deleteLabel && (
+                    <span className="absolute top-10 right-0 bg-red-500 text-white text-sm rounded px-2 py-1">
+                      {deleteLabel}
+                    </span>
+                  )}
                   <img className="w-60 h-60" src={item.img} alt="Product Image" />
                   <div className="flex flex-col gap-2 text-white">
                     <div className="flex items-center gap-2">
                       <h1 className="text-left text-lg font-semibold">{item.heading}</h1>
                       <span className="text-xl font-semibold">:</span>
-                      <h1 className="text-xl font-semibold">{item.price}</h1>
+                      <h1 className="text-xl font-semibold flex items-center"><LuIndianRupee />{item.price}</h1>
                     </div>
                     <div className="flex items-center gap-4 text-2xl text-black">
                       <button className="btn-bg w-12 h-10 rounded-lg" onClick={handleDecrement(item.itemNo)}>-</button>
@@ -164,22 +178,22 @@ const OpenCart = () => {
                       <button className="btn-bg w-12 h-10 rounded-lg text-xl" onClick={handleIncrement(item.itemNo)}>+</button>
                     </div>
                     <div className="text-left text-lg font-semibold flex items-center">
-                      Price : <FaRupeeSign className='text-sm' /> { item.price * item.quantity}
+                      Price : <FaRupeeSign className='text-sm' /> {item.price * item.quantity}
                     </div>
                   </div>
-                 <div className='pb-52 '>
-                 <button onClick={handleRemoveItem(item.itemNo)} className="bg-red-500 text-2xl  rounded-lg text-black">
-                   <RxCross2 className='w-12 h-10 '/>
-                  </button>
-
-                 </div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="sticky bottom-0 w-full flex items-center justify-between btn-bg py-4 px-2 rounded-xl">
-            <p className="text-base font-bold">{cartMessage ? cartMessage : `Total Price: ${subTotal}`}</p>
+          <p className="text-base font-bold flex items-center">
+      {cartMessage ? cartMessage : (
+        <>
+          Total Price: <LuIndianRupee /> {subTotal}
+        </>
+      )}
+    </p>
             <button onClick={handleSubmit} className="bg-blue-900 text-white font-bold py-2 px-4 rounded-xl relative">Place Order</button>
           </div>
         </div>

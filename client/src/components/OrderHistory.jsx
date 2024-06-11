@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SlArrowLeft } from "react-icons/sl";
 import { FaClipboardList } from "react-icons/fa";
 import axios from 'axios';
+import { LuIndianRupee } from "react-icons/lu";
 
 const OrderHistory = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -68,13 +69,13 @@ const OrderHistory = () => {
                           <div key={pIndex} className='flex items-center justify-between border-b font-semibold border-black py-2'>
                             <p>{product.productNames}</p>
                             <p>{product.quantity}</p>
-                            <p>{product.price}</p>
+                            <p className='flex items-center'><LuIndianRupee />{product.price}</p>
                           </div>
                         ))}
                       </div>
                     </div>
                     <p className='px-6 py-2'>Date & Time: {new Date(order.createdAt).toLocaleString()}</p>
-                    <p className='py-3 font-bold px-6'>Total Price: {order.totalPrice}</p>
+                    <p className='py-3 font-bold px-6 flex items-center'>Total Price: <LuIndianRupee />{order.totalPrice}</p>
                   </div>
                 ))
               ) : (

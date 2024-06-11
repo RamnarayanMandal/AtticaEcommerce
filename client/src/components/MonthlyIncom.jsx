@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SlArrowLeft } from "react-icons/sl";
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import axios from 'axios';
+import { LuIndianRupee } from "react-icons/lu";
 
 const MonthlyIncom = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -47,6 +48,14 @@ const MonthlyIncom = () => {
         return orderMonth === selectedMonth && String(orderYear) === selectedYear;
       })
     : [];
+
+  const totalSummary = filteredHistoryData.reduce((summary, order) => {
+    order.products.forEach(product => {
+      summary.totalPrice += product.price * product.quantity;
+      summary.totalQuantity += product.quantity;
+    });
+    return summary;
+  }, { totalPrice: 0, totalQuantity: 0 });
 
   return (
     <div className="flex">
@@ -96,31 +105,46 @@ const MonthlyIncom = () => {
           ) : (
             <div className='grid grid-cols-1 gap-6'>
               {filteredHistoryData.length > 0 ? (
-                filteredHistoryData.map((order, index) => (
-                  <div key={index} className="btn-bg shadow-lg rounded-lg overflow-hidden">
-                    <div className="border-gray-300 pt-4">
-                      <h2 className="font-bold mb-1 text-xl">Products Details</h2>
-                      <div className="px-6 py-4">
-                        <div className='flex items-center justify-between border-b text-xl font-bold border-black py-2'>
-                          <p className='font-semibold'>Product Name</p>
-                          <p className='font-semibold'>Quantity</p>
-                          <p className='font-semibold'>Price</p>
-                        </div>
-                        {order.products.map((product, pIndex) => (
-                          <div key={pIndex} className='flex items-center justify-between border-b font-semibold border-black py-2'>
-                            <p>{product.productNames}</p>
-                            <p>{product.quantity}</p>
-                            <p>{product.price}</p>
-                          </div>
-                        ))}
+                <>
+                  <div className=" shadow-lg rounded-lg overflow-hidden mb-6 bg-blue-900 text-white">
+                    <div className="border-gray-300 pt-4 px-6 py-4">
+                      <h2 className="font-bold mb-2 text-xl">Summary</h2>
+                      <div className='flex items-center justify-between border-b text-xl font-bold border-black py-2'>
+                        <p className='font-semibold'>Total Quantity: </p>
+                        <p className='font-semibold'>{totalSummary.totalQuantity} Items</p>
+                      </div>
+                      <div className='flex items-center justify-between border-b text-xl font-bold border-black py-2'>
+                        <p className='font-semibold'>Total Price:  </p>
+                        <p className='font-semibold flex items-center'><LuIndianRupee />{totalSummary.totalPrice}</p>
                       </div>
                     </div>
-                    <p className='px-6 py-2'>Date & Time: {new Date(order.createdAt).toLocaleString()}</p>
-                    <p className='py-3 font-bold px-6'>Total Price: {order.totalPrice}</p>
                   </div>
-                ))
+                  {filteredHistoryData.map((order, index) => (
+                    <div key={index} className="btn-bg shadow-lg rounded-lg overflow-hidden">
+                      <div className="border-gray-300 pt-4">
+                        <h2 className="font-bold mb-1 text-xl">Products Details</h2>
+                        <div className="px-6 py-4">
+                          <div className='flex items-center justify-between border-b text-xl font-bold border-black py-2'>
+                            <p className='font-semibold'>Product Name</p>
+                            <p className='font-semibold'>Quantity</p>
+                            <p className='font-semibold'>Price</p>
+                          </div>
+                          {order.products.map((product, pIndex) => (
+                            <div key={pIndex} className='flex items-center justify-between border-b font-semibold border-black py-2 '>
+                              <p>{product.productNames}</p>
+                              <p>{product.quantity}</p>
+                              <p className='flex items-center'><LuIndianRupee />{product.price}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <p className='px-6 py-2'>Date & Time: {new Date(order.createdAt).toLocaleString()}</p>
+                      <p className='py-3 font-bold px-6 flex items-center'>Total Price: <LuIndianRupee />{order.totalPrice}</p>
+                    </div>
+                  ))}
+                </>
               ) : (
-                <p className='text-white'>No order history available for the selected month.</p>
+                <p className='text-[#c8a357]'>No order history available for the selected month.</p>
               )}
             </div>
           )}
